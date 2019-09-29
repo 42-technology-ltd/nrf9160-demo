@@ -1,0 +1,51 @@
+[package]
+authors = ["Jonathan Pallant (42 Technology) <jonathan.pallant@42technology.com"]
+edition = "2018"
+readme = "README.md"
+name = "nrf9160-demo"
+version = "0.1.0"
+
+[dependencies]
+cortex-m = "0.6"
+cortex-m-rt = "0.6"
+embedded-hal = { version = "0.2.2", features = ["unproven"] }
+nb = "*"
+void = { version = "1.0.2", default-features = false }
+spin = "0.5"
+nrfxlib = "0.1"
+menu = "0.2"
+tinyrlibc = "0.1.2"
+heapless = "0.5"
+nrf9160-dk-bsp = { git = "https://github.com/nrf-rs/nrf52-hal", optional = true }
+actinius-icarus-bsp = { git = "https://github.com/nrf-rs/nrf52-hal", optional = true }
+
+# this lets you use `cargo fix`!
+[[bin]]
+name = "nrf9160-demo"
+test = false
+bench = false
+
+[profile.release]
+codegen-units = 1 # better optimizations
+debug = true # symbols are nice and they don't increase the size on Flash
+lto = true # better optimizations
+incremental = false
+opt-level = "z"
+
+[profile.dev]
+debug = true
+lto = false
+incremental = false
+opt-level = 1
+
+[features]
+# no features by default
+default = []
+verbose-trace = []
+icarus = [ "actinius-icarus-bsp" ]
+nrf9160dk = [ "nrf9160-dk-bsp" ]
+
+[patch.crates-io]
+# Use a special copy of byteorder, which has std support disabled
+# This is a work around for Cargo bug 5730
+byteorder = { git = "https://github.com/rust-embedded-community/byteorder" }
