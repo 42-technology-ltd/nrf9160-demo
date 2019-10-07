@@ -100,7 +100,7 @@ the Rust Embedded team. We are grateful for their work.
 
 # License
 
-The underlying cortex-m-quickstart template is under these licences:
+This example is licensed to your under either:
 
 - Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or
   http://www.apache.org/licenses/LICENSE-2.0)
@@ -109,5 +109,3 @@ The underlying cortex-m-quickstart template is under these licences:
 
 at your option.
 
-*The specific changes to support the nRF9160 are proprietary and Copyright (c)
-42 Technology, 2019.*
