@@ -7,36 +7,14 @@ This project is developed and maintained by 42 Technology (www.42technology.com)
 ## Features
 
 * Is started by the Nordic 'secure bootloader' and operates in ‘insecure’ mode
-* Uses just 128 KiB out of 768 KiB of Application Flash
+* Uses just 140 KiB out of 768 KiB of Application Flash
 * Uses just 8 KiB out of the 128 KiB Application RAM (plus stack)
 * Uses the pre-compiled Nordic `libbsd` static library for mbedTLS, the Nordic
   socket API, access to the LTE modem, etc.
-* Implements embedded-hal compliant drivers for the nRF9160's Timer, GPIO and
+* Demonstrates embedded-hal compliant drivers for the nRF9160's Timer, GPIO and
   UARTE peripherals
 * Has a menu-driven interface over UARTE0 (which appears as a USB Serial device)
-* Uploads the system temperature every 30 seconds to AWS, using client-side
-  certificates and HTTPS
-
-## Amazon AWS
-
-You will need an Amazon AWS account, and to create an "IoT Device" in their
-console. Download the connection for for `GNU/Linux + Python` and add the
-contents of `<name>.cert.pem`  and `<name>.private.key` to the appropriate
-variables in `main.rs`. You will also need to put your endpoint address (see
-Manage / Things / thing / Interact, you want the string under 'HTTPS' ending
-in `amazonaws.com`) into the variable `ENDPOINT_ADDRESS`. Finally you also
-need to set the `THING_ID`.
-
-By executing the `run` command, the system will post a new message to the
-cloud every 30 seconds, updating the device shadow with the current
-temperature and reporting the time taken to send the message. The message is
-of the format:
-
-```
-{"state":{"reported":{"temperature":36}}}
-```
-
-Where `36` is the current system temperature, as measured by the nRF9160.
+* Demonstrates access to HTTP services over TLS
 
 ## Dependencies
 
@@ -50,9 +28,6 @@ To build embedded programs using this template you'll need:
 
 - clang
 
-- A checkout of the Nordic
-  [nrfxlib](https://github.com/NordicPlayground/nrfxlib) repo
-
 To get these things on Ubuntu 18.04, run:
 
 ``` console
@@ -61,9 +36,7 @@ $ curl -Lq https://developer.arm.com/-/media/Files/downloads/gnu-rm/8-2018q4/gcc
 $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s - '-y'
 $ source $HOME/.cargo/env
 $ rustup target add thumbv8m.main-none-eabi
-$ git clone https://github.com/NordicPlayground/nrfxlib ~/nrfxlib
 $ export PATH=$PATH:~/gcc-arm-none-eabi-8-2018-q4-major/bin
-$ export NRFXLIB_PATH=~/nrfxlib
 $ export NEWLIB_PATH=~/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include
 ```
 
@@ -107,5 +80,6 @@ This example is licensed to your under either:
 
 - MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
 
-at your option.
+at your option. Please note that any dependencies, including the Nordic libbsd library,
+may be under different licensing terms.
 
