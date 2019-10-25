@@ -328,15 +328,27 @@ fn command_on(
 	let gnss = nrfxlib::gnss::GnssSocket::new().expect("GnssSocket::new");
 	// Same as the Nordic demo app
 	println!("Set fix interval to 1...");
-	gnss.set_fix_interval(1)
-		.expect("GnssSocket::set_fix_interval");;
+	if let Err(e) = gnss.set_fix_interval(1) {
+		println!("Failed to set fix interval. GPS may be disabled - see 'mode'. Error {:?}", e);
+		return;
+	}
 	println!("Set fix retry to 0...");
-	gnss.set_fix_retry(0).expect("GnssSocket::set_fix_retry");
+	if let Err(e) = gnss.set_fix_retry(0) {
+		println!("Failed to set fix retry. GPS may be disabled - see 'mode'. Error {:?}", e);
+		return;
+	}
 	let mask = nrfxlib::gnss::NmeaMask::new();
 	println!("Setting NMEA mask to {:?}", mask);
-	gnss.set_nmea_mask(mask).expect("GnssSocket::set_nmea_mask");
+	if let Err(e) = gnss.set_nmea_mask(mask) {
+		println!("Failed to set NMEA mask. GPS may be disabled - see 'mode'. Error {:?}", e);
+		return;
+	}
 	println!("Starting gnss...");
-	gnss.start().expect("GnssSocket::start");
+	if let Err(e) = gnss.start() {
+		println!("Failed to start GPS. GPS may be disabled - see 'mode'. Error {:?}", e);
+		return;
+	}
+	println!("GPS started OK.");
 }
 
 /// The modem starts up in the powered-off state. This turns it on.
