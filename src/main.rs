@@ -19,6 +19,9 @@
 extern crate cortex_m_rt as rt;
 extern crate tinyrlibc;
 
+#[cfg(not(any(feature = "nrf9160dk", feature = "icarus")))]
+compile_error!("Must enable nrf9160dk or icarus features to select a board.");
+
 #[cfg(feature = "nrf9160dk")]
 extern crate nrf9160_dk_bsp as bsp;
 
@@ -303,17 +306,17 @@ fn command_on(
 	_args: &str,
 	_context: &mut Context,
 ) {
-	println!("Configure GPS antenna...");
-	match nrfxlib::modem::configure_gps_on_pca10090ns() {
+	println!("Configure GNSS antenna...");
+	match nrfxlib::modem::configure_gnss_on_pca10090ns() {
 		Ok(_) => {
-			println!("GPS antenna enabled.");
+			println!("GNSS antenna enabled.");
 		}
 		Err(e) => {
-			println!("Error turning GPS antenna on: {:?}", e);
+			println!("Error turning GNSS antenna on: {:?}", e);
 		}
 	}
 	print!("Turning modem on...");
-	match nrfxlib::modem::start() {
+	match nrfxlib::modem::on() {
 		Ok(_) => {
 			println!("Modem now on.");
 		}
@@ -322,23 +325,18 @@ fn command_on(
 		}
 	}
 	println!("Opening socket...");
-	let gps = nrfxlib::gnss::GnssSocket::new().expect("GnssSocket::new");
+	let gnss = nrfxlib::gnss::GnssSocket::new().expect("GnssSocket::new");
 	// Same as the Nordic demo app
 	println!("Set fix interval to 1...");
-	gps.set_fix_interval(1)
+	gnss.set_fix_interval(1)
 		.expect("GnssSocket::set_fix_interval");;
 	println!("Set fix retry to 0...");
-	gps.set_fix_retry(0).expect("GnssSocket::set_fix_retry");
+	gnss.set_fix_retry(0).expect("GnssSocket::set_fix_retry");
 	let mask = nrfxlib::gnss::NmeaMask::new();
-	// .set(nrfxlib::gnss::NmeaField::GpsFixData)
-	// .set(nrfxlib::gnss::NmeaField::LatLongTime)
-	// .set(nrfxlib::gnss::NmeaField::DopAndActiveSatellites)
-	// .set(nrfxlib::gnss::NmeaField::SatellitesInView)
-	// .set(nrfxlib::gnss::NmeaField::RecommendedMinimumSpecificFixData);
 	println!("Setting NMEA mask to {:?}", mask);
-	gps.set_nmea_mask(mask).expect("GnssSocket::set_nmea_mask");
-	println!("Starting GPS...");
-	gps.start().expect("GnssSocket::start");
+	gnss.set_nmea_mask(mask).expect("GnssSocket::set_nmea_mask");
+	println!("Starting gnss...");
+	gnss.start().expect("GnssSocket::start");
 }
 
 /// The modem starts up in the powered-off state. This turns it on.
