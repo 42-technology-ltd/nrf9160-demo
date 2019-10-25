@@ -24,6 +24,8 @@ To build embedded programs using this template you'll need:
 
 - `rust-std` components (pre-compiled `core` crate) for armv8m.main targets.
 
+- Bindgen (we used 0.51)
+
 - GCC for bare-metal ARM (`arm-none-eabi-gcc`), with the newlib C library
 
 - clang
@@ -36,6 +38,7 @@ $ curl -Lq https://developer.arm.com/-/media/Files/downloads/gnu-rm/8-2018q4/gcc
 $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s - '-y'
 $ source $HOME/.cargo/env
 $ rustup target add thumbv8m.main-none-eabi
+$ cargo install bindgen
 $ export PATH=$PATH:~/gcc-arm-none-eabi-8-2018-q4-major/bin
 $ export NEWLIB_PATH=~/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include
 ```
