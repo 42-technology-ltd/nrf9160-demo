@@ -329,23 +329,35 @@ fn command_on(
 	// Same as the Nordic demo app
 	println!("Set fix interval to 1...");
 	if let Err(e) = gnss.set_fix_interval(1) {
-		println!("Failed to set fix interval. GPS may be disabled - see 'mode'. Error {:?}", e);
+		println!(
+			"Failed to set fix interval. GPS may be disabled - see 'mode'. Error {:?}",
+			e
+		);
 		return;
 	}
 	println!("Set fix retry to 0...");
 	if let Err(e) = gnss.set_fix_retry(0) {
-		println!("Failed to set fix retry. GPS may be disabled - see 'mode'. Error {:?}", e);
+		println!(
+			"Failed to set fix retry. GPS may be disabled - see 'mode'. Error {:?}",
+			e
+		);
 		return;
 	}
 	let mask = nrfxlib::gnss::NmeaMask::new();
 	println!("Setting NMEA mask to {:?}", mask);
 	if let Err(e) = gnss.set_nmea_mask(mask) {
-		println!("Failed to set NMEA mask. GPS may be disabled - see 'mode'. Error {:?}", e);
+		println!(
+			"Failed to set NMEA mask. GPS may be disabled - see 'mode'. Error {:?}",
+			e
+		);
 		return;
 	}
 	println!("Starting gnss...");
-	if let Err(e) = gnss.start() {
-		println!("Failed to start GPS. GPS may be disabled - see 'mode'. Error {:?}", e);
+	if let Err(e) = gnss.start(nrfxlib::gnss::DeleteMask::new()) {
+		println!(
+			"Failed to start GPS. GPS may be disabled - see 'mode'. Error {:?}",
+			e
+		);
 		return;
 	}
 	println!("GPS started OK.");
