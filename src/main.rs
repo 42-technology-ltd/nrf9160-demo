@@ -344,7 +344,7 @@ fn command_on(
 		return;
 	}
 	println!("Starting gnss...");
-	if let Err(e) = gnss.start() {
+	if let Err(e) = gnss.start(nrfxlib::gnss::DeleteMask::new()) {
 		println!("Failed to start GPS. GPS may be disabled - see 'mode'. Error {:?}", e);
 		return;
 	}
