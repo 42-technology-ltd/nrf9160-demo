@@ -12,7 +12,7 @@ embedded-hal = { version = "0.2.2", features = ["unproven"] }
 nb = "*"
 void = { version = "1.0.2", default-features = false }
 spin = "0.5"
-nrfxlib = "0.2"
+nrfxlib = "0.5"
 menu = "0.2"
 tinyrlibc = "0.1.2"
 heapless = "0.5"

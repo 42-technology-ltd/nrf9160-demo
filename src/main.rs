@@ -512,7 +512,11 @@ fn command_get(
 
 		// We make a secure connection here, using our pre-saved certs
 		println!("Making socket..");
-		let mut skt = nrfxlib::tls::TlsSocket::new(true, &[SECURITY_TAG])?;
+		let mut skt = nrfxlib::tls::TlsSocket::new(
+			nrfxlib::tls::PeerVerification::Disabled,
+			&[SECURITY_TAG],
+			nrfxlib::tls::Version::Tls1v3,
+		)?;
 		println!("Connecting to {}..", host);
 		skt.connect(host, port)?;
 		println!("Writing...");
