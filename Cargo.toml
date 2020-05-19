@@ -8,16 +8,16 @@ version = "0.2.0"
 [dependencies]
 cortex-m = "0.6"
 cortex-m-rt = "0.6"
-embedded-hal = { version = "0.2.2", features = ["unproven"] }
-nb = "*"
+embedded-hal = { version = "0.2.3", features = ["unproven"] }
+nb = "0.1"
 void = { version = "1.0.2", default-features = false }
 spin = "0.5"
 nrfxlib = "0.5"
 menu = "0.2"
-tinyrlibc = "0.1.2"
+tinyrlibc = "0.2"
 heapless = "0.5"
-nrf9160-dk-bsp = { git = "https://github.com/nrf-rs/nrf52-hal", optional = true }
-actinius-icarus-bsp = { git = "https://github.com/nrf-rs/nrf52-hal", optional = true }
+nrf9160-dk-bsp = { git = "https://github.com/nrf-rs/nrf52-hal", rev="9a0ea11", optional = true }
+actinius-icarus-bsp = { git = "https://github.com/nrf-rs/nrf52-hal", rev="9a0ea11", optional = true }
 
 # this lets you use `cargo fix`!
 [[bin]]

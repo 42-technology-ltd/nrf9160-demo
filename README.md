@@ -6,7 +6,7 @@ This project is developed and maintained by 42 Technology (www.42technology.com)
 
 ## Features
 
-* Is started by the Nordic 'secure bootloader' and operates in ‘insecure’ mode
+* Is started by the Nordic 'secure bootloader' and operates in 'insecure' mode
 * Uses just 140 KiB out of 768 KiB of Application Flash
 * Uses just 8 KiB out of the 128 KiB Application RAM (plus stack)
 * Uses the pre-compiled Nordic `libbsd` static library for mbedTLS, the Nordic
@@ -52,7 +52,9 @@ $ ./release.sh
 The outputs are placed in `target/bin/release`. You can also run `./debug.sh`
 if you want an unoptimised version.
 
-To flash, load up J-Link Commander, and run:
+To flash, first you must build and load the Nordic Secure Partition Manager (spm), which acts as a Bootloader and takes the nRF9160 out of Secure Mode. Follow the instructions at [https://developer.nordicsemi.com/nRF_Connect_SDK/doc/1.2.0/nrf/samples/nrf9160/spm/README.html] to compile and install the SPM from nRF Connect SDK v1.2.0.
+
+Next, load up J-Link Commander, and run:
 
 ```
 J-Link> usb
