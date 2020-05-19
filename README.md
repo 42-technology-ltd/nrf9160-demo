@@ -7,14 +7,14 @@ This project is developed and maintained by 42 Technology (www.42technology.com)
 ## Features
 
 * Is started by the Nordic 'secure bootloader' and operates in 'insecure' mode
-* Uses just 140 KiB out of 768 KiB of Application Flash
-* Uses just 8 KiB out of the 128 KiB Application RAM (plus stack)
+* Uses just 108 KiB out of 768 KiB of Application Flash
+* Uses just 2 KiB out of the 128 KiB Application RAM (plus stack)
 * Uses the pre-compiled Nordic `libbsd` static library for mbedTLS, the Nordic
   socket API, access to the LTE modem, etc.
 * Demonstrates embedded-hal compliant drivers for the nRF9160's Timer, GPIO and
   UARTE peripherals
 * Has a menu-driven interface over UARTE0 (which appears as a USB Serial device)
-* Demonstrates access to HTTP services over TLS
+* Demonstrates access to HTTP services over TLS (_TBD_)
 
 ## Dependencies
 
