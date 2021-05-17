@@ -24,23 +24,18 @@ To build embedded programs using this template you'll need:
 
 - `rust-std` components (pre-compiled `core` crate) for armv8m.main targets.
 
-- Bindgen (we used 0.51)
-
-- GCC for bare-metal ARM (`arm-none-eabi-gcc`), with the newlib C library
+- GCC for bare-metal ARM (`arm-none-eabi-gcc`)
 
 - clang
 
 To get these things on Ubuntu 18.04, run:
 
 ``` console
-$ apt-get update && apt-get install -y curl llvm-dev libclang-dev clang git
 $ curl -Lq https://developer.arm.com/-/media/Files/downloads/gnu-rm/8-2018q4/gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2 | tar xjf - -C ~
 $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s - '-y'
 $ source $HOME/.cargo/env
-$ rustup target add thumbv8m.main-none-eabi
-$ cargo install bindgen
+$ rustup target add thumbv8m.main-none-eabihf
 $ export PATH=$PATH:~/gcc-arm-none-eabi-8-2018-q4-major/bin
-$ export NEWLIB_PATH=~/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include
 ```
 
 To build, just run:
@@ -63,10 +58,6 @@ J-Link> loadfile ~/nrf9160-blink/target/bin/release/nrf9160-demo.hex # to flash 
 J-Link> r # for reset
 J-Link> g # for go
 ```
-
-*NOTE*: The Nordic secure bootloader will not boot if the USB-Serial is
-disconnected. Connect your serial terminal to the lowest numbered COM port on
-the nRF9160-DK then press the 'Reset' button to reboot the chip.
 
 # Upstream
 

@@ -8,5 +8,5 @@ rustflags = [
 ]
 
 [build]
-target = "thumbv8m.main-none-eabi" # Cortex-M33
+target = "thumbv8m.main-none-eabihf" # Cortex-M33
 
