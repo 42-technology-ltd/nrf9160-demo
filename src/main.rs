@@ -41,6 +41,8 @@ use core::panic::PanicInfo;
 
 use bsp::pac::interrupt;
 use bsp::prelude::*;
+use log::{Level, Metadata, Record};
+use log::{LevelFilter, SetLoggerError};
 use rt::entry;
 
 // ==========================================================================
@@ -60,6 +62,9 @@ enum Error {
 	WriteError,
 	ReadError,
 }
+
+/// Our placeholder object for logging.
+struct SimpleLogger;
 
 // ==========================================================================
 //
@@ -144,6 +149,9 @@ static GLOBAL_UART: spin::Mutex<Option<bsp::hal::uarte::Uarte<bsp::pac::UARTE0_N
 /// flash and then also when opening a TLS socket).
 const SECURITY_TAG: u32 = 0;
 
+/// Our logging object
+static LOGGER: SimpleLogger = SimpleLogger;
+
 // ==========================================================================
 //
 // Macros
@@ -200,6 +208,8 @@ fn main() -> ! {
 	}
 
 	*GLOBAL_UART.lock() = Some(board.cdc_uart);
+
+	logging_init().unwrap();
 
 	// Set one LED on so we know we're running
 	led1.enable();
@@ -326,23 +336,35 @@ fn command_on(
 	// Same as the Nordic demo app
 	println!("Set fix interval to 1...");
 	if let Err(e) = gnss.set_fix_interval(1) {
-		println!("Failed to set fix interval. GPS may be disabled - see 'mode'. Error {:?}", e);
+		println!(
+			"Failed to set fix interval. GPS may be disabled - see 'mode'. Error {:?}",
+			e
+		);
 		return;
 	}
 	println!("Set fix retry to 0...");
 	if let Err(e) = gnss.set_fix_retry(0) {
-		println!("Failed to set fix retry. GPS may be disabled - see 'mode'. Error {:?}", e);
+		println!(
+			"Failed to set fix retry. GPS may be disabled - see 'mode'. Error {:?}",
+			e
+		);
 		return;
 	}
 	let mask = nrfxlib::gnss::NmeaMask::new();
 	println!("Setting NMEA mask to {:?}", mask);
 	if let Err(e) = gnss.set_nmea_mask(mask) {
-		println!("Failed to set NMEA mask. GPS may be disabled - see 'mode'. Error {:?}", e);
+		println!(
+			"Failed to set NMEA mask. GPS may be disabled - see 'mode'. Error {:?}",
+			e
+		);
 		return;
 	}
 	println!("Starting gnss...");
-	if let Err(e) = gnss.start( nrfxlib::gnss::DeleteMask::new()) {
-		println!("Failed to start GPS. GPS may be disabled - see 'mode'. Error {:?}", e);
+	if let Err(e) = gnss.start(nrfxlib::gnss::DeleteMask::new()) {
+		println!(
+			"Failed to start GPS. GPS may be disabled - see 'mode'. Error {:?}",
+			e
+		);
 		return;
 	}
 	println!("GPS started OK.");
@@ -497,7 +519,11 @@ fn command_get(
 
 		// We make a secure connection here, using our pre-saved certs
 		println!("Making socket..");
-		let mut skt = nrfxlib::tls::TlsSocket::new(nrfxlib::tls::PeerVerification::Disabled, &[SECURITY_TAG], nrfxlib::tls::Version::Tls1v2)?;
+		let mut skt = nrfxlib::tls::TlsSocket::new(
+			nrfxlib::tls::PeerVerification::Disabled,
+			&[SECURITY_TAG],
+			nrfxlib::tls::Version::Tls1v2,
+		)?;
 		println!("Connecting to {}..", host);
 		skt.connect(host, port)?;
 		println!("Writing...");
@@ -669,6 +695,24 @@ fn command_go_at_fun(
 			println!("ERROR");
 		}
 	}
+}
+
+pub fn logging_init() -> Result<(), SetLoggerError> {
+	log::set_logger(&LOGGER).map(|()| log::set_max_level(LevelFilter::Debug))
+}
+
+impl log::Log for SimpleLogger {
+	fn enabled(&self, metadata: &Metadata) -> bool {
+		metadata.level() <= Level::Debug
+	}
+
+	fn log(&self, record: &Record) {
+		if self.enabled(record.metadata()) {
+			println!("{} - {}", record.level(), record.args());
+		}
+	}
+
+	fn flush(&self) {}
 }
 
 impl core::fmt::Write for Context {

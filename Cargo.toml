@@ -13,6 +13,7 @@ embedded-hal = { version = "0.2.2", features = ["unproven"] }
 nb = "*"
 void = { version = "1.0.2", default-features = false }
 spin = "0.5"
+log = "0.4"
 nrfxlib = { git = "https://github.com/42-technology-ltd/nrfxlib", branch="support_151" }
 menu = "0.2"
 tinyrlibc = "0.2.1"
