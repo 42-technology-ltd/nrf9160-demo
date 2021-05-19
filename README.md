@@ -7,10 +7,10 @@ This project is developed and maintained by 42 Technology (www.42technology.com)
 ## Features
 
 * Is started by the Nordic 'secure bootloader' and operates in ‘insecure’ mode
-* Uses just 140 KiB out of 768 KiB of Application Flash
-* Uses just 8 KiB out of the 128 KiB Application RAM (plus stack)
-* Uses the pre-compiled Nordic `libbsd` static library for mbedTLS, the Nordic
-  socket API, access to the LTE modem, etc.
+* Uses just 98 KiB out of 768 KiB of Application Flash
+* Uses just 5 KiB out of the 128 KiB Application RAM (plus stack)
+* Uses the pre-compiled Nordic `nrf_modem` static library for mbedTLS, the
+  Nordic socket API, access to the LTE modem, etc.
 * Demonstrates embedded-hal compliant drivers for the nRF9160's Timer, GPIO and
   UARTE peripherals
 * Has a menu-driven interface over UARTE0 (which appears as a USB Serial device)
@@ -20,13 +20,11 @@ This project is developed and maintained by 42 Technology (www.42technology.com)
 
 To build embedded programs using this template you'll need:
 
-- Rust `rustc 1.36.0 (a53f9df32 2019-07-03)` or newer
+- Rust `rustc 1.52.1 (9bc8c42bb 2021-05-09)` or newer
 
 - `rust-std` components (pre-compiled `core` crate) for armv8m.main targets.
 
 - GCC for bare-metal ARM (`arm-none-eabi-gcc`)
-
-- clang
 
 To get these things on Ubuntu 18.04, run:
 
@@ -54,7 +52,7 @@ J-Link> usb
 J-Link> connect
 # select nRF9160
 J-Link> r # for reset
-J-Link> loadfile ~/nrf9160-blink/target/bin/release/nrf9160-demo.hex # to flash the board
+J-Link> loadfile ~/nrf9160-demo/target/bin/release/nrf9160-demo.hex # to flash the board
 J-Link> r # for reset
 J-Link> g # for go
 ```
