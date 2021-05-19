@@ -6,14 +6,6 @@ set print asm-demangle on
 # set backtrace limit to not have infinite backtrace loops
 set backtrace limit 32
 
-# detect unhandled exceptions, hard faults and panics
-break DefaultHandler
-break HardFault
-break rust_begin_unwind
-
-# *try* to stop at the user entry point (it might be gone due to inlining)
-break main
-
 # # send captured ITM to the file itm.fifo
 # # (the microcontroller SWO pin must be connected to the programmer SWO pin)
 # # 8000000 must match the core clock frequency
@@ -27,7 +19,13 @@ break main
 # # enable ITM port 0
 # monitor itm port 0 on
 
+monitor halt
+
+monitor reset
+
 load
+
+monitor reset
 
 # start the process but immediately halt the processor
 stepi

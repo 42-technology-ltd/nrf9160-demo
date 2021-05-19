@@ -1,12 +1,8 @@
-[target.thumbv8m.main-none-eabi]
+[target.'cfg(all(target_arch = "arm", target_os = "none"))']
 runner = "gdb-multiarch -q -x jlink.gdb"
 rustflags = [
-  "-C", "linker=arm-none-eabi-gcc",
-  "-C", "link-arg=-Wl,-Tlink.x",
-  "-C", "link-arg=-nostartfiles",
-  "-C", "link-arg=-mcpu=cortex-m33",
+    "-C", "link-arg=-Tlink.x",
 ]
 
 [build]
-target = "thumbv8m.main-none-eabi" # Cortex-M33
-
+target = "thumbv8m.main-none-eabihf"

@@ -4,6 +4,7 @@ edition = "2018"
 readme = "README.md"
 name = "nrf9160-demo"
 version = "0.2.0"
+resolver = "2"
 
 [dependencies]
 cortex-m = "0.6"
@@ -12,12 +13,13 @@ embedded-hal = { version = "0.2.2", features = ["unproven"] }
 nb = "*"
 void = { version = "1.0.2", default-features = false }
 spin = "0.5"
-nrfxlib = "0.2"
+log = "0.4"
+nrfxlib = "0.6.0"
 menu = "0.2"
-tinyrlibc = "0.1.2"
-heapless = "0.5"
-nrf9160-dk-bsp = { git = "https://github.com/nrf-rs/nrf52-hal", optional = true }
-actinius-icarus-bsp = { git = "https://github.com/nrf-rs/nrf52-hal", optional = true }
+tinyrlibc = "0.2.1"
+heapless = "0.7"
+nrf9160-dk-bsp = { git = "https://github.com/nrf-rs/nrf9160-dk", branch="out-of-box", optional = true }
+actinius-icarus-bsp = { git = "https://github.com/nrf-rs/actinius-icarus", optional = true }
 
 # this lets you use `cargo fix`!
 [[bin]]
